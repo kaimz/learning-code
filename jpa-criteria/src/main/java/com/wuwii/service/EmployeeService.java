@@ -1,10 +1,12 @@
 package com.wuwii.service;
 
 import com.wuwii.entity.Employee;
+import com.wuwii.form.EmployeeResult;
 import com.wuwii.form.EmployeeSearch;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
+import javax.persistence.Tuple;
 import java.util.List;
 
 /**
@@ -32,4 +34,26 @@ public interface EmployeeService {
      */
     List<Employee> listByAge(Integer age);
 
+    /**
+     * 参数化表达式
+     *
+     * @param age
+     * @return
+     */
+    List<Employee> listByAge1(Integer age);
+
+    /**
+     * 分组统计重名数量
+     *
+     * @param name
+     * @return
+     */
+    List<Tuple> groupByName(String name);
+
+    /**
+     * 使用 构造函数 装载查询出来的数据
+     *
+     * @return
+     */
+    List<EmployeeResult> findEmployee();
 }

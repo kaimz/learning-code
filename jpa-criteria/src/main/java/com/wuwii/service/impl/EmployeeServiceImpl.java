@@ -3,6 +3,7 @@ package com.wuwii.service.impl;
 import com.wuwii.dao.EmployeeDao;
 import com.wuwii.dao.JobDao;
 import com.wuwii.entity.*;
+import com.wuwii.form.EmployeeResult;
 import com.wuwii.form.EmployeeSearch;
 import com.wuwii.service.EmployeeService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,6 +14,7 @@ import org.springframework.stereotype.Service;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import javax.persistence.Tuple;
 import javax.persistence.TypedQuery;
 import javax.persistence.criteria.*;
 import java.util.LinkedList;
@@ -110,6 +112,76 @@ public class EmployeeServiceImpl implements EmployeeService {
         Order order = cb.asc(root.get(Employee_.id));
         query.orderBy(order);
         query.where(cb.or(predicates.toArray(new Predicate[predicates.size()])));
+        TypedQuery typedQuery = em.createQuery(query); // TypedQuery执行查询与获取元模型实例
+        return typedQuery.getResultList();
+    }
+
+    /**
+     * 参数化表达式
+     *
+     * @param age
+     * @return
+     */
+    @Override
+    public List<Employee> listByAge1(Integer age) {
+        CriteriaBuilder cb = em.getCriteriaBuilder();
+        CriteriaQuery<Employee> query = cb.createQuery(Employee.class);
+        Root<Employee> root = query.from(Employee.class); // 设置查询根，可以根据查询的类型设置不同的
+        ParameterExpression<Integer> ageParameter = cb.parameter(Integer.class);
+        List<Predicate> predicates = new LinkedList<>();
+        // 连表查询使用左连接
+        Join<Employee, EmployeeDetail> join = root.join(Employee_.detail, JoinType.LEFT);
+        predicates.add(cb.gt(join.get(EmployeeDetail_.age), ageParameter));
+        predicates.add(cb.equal(join.get(EmployeeDetail_.age), ageParameter));
+        // 设置排序规则
+        Order order = cb.asc(root.get(Employee_.id));
+        query.orderBy(order);
+        query.where(cb.or(predicates.toArray(new Predicate[predicates.size()])));
+        TypedQuery typedQuery = em.createQuery(query); // TypedQuery执行查询与获取元模型实例
+        return typedQuery.setParameter(ageParameter, age).getResultList();
+    }
+
+    /**
+     * 分组统计重名数量
+     *
+     * @param name
+     * @return
+     */
+    @Override
+    public List<Tuple> groupByName(String name) {
+        CriteriaBuilder cb = em.getCriteriaBuilder();
+        CriteriaQuery<Tuple> query = cb.createTupleQuery();
+        Root<Employee> root = query.from(Employee.class);
+        Join<Employee, EmployeeDetail> join = root.join(Employee_.detail, JoinType.LEFT);
+        query.groupBy(join.get(EmployeeDetail_.name));
+        if (name != null) {
+            query.having(cb.like(join.get(EmployeeDetail_.name), "%" + name + "%"));
+        }
+        query.select(cb.tuple(join.get(EmployeeDetail_.name).alias("name"), cb.count(root).alias("count")));
+        TypedQuery<Tuple> typedQuery = em.createQuery(query);
+        return typedQuery.getResultList();
+        // print sql :
+        //select employeede1_.name as col_0_0_, count(employee0_.id) as col_1_0_ from employee employee0_
+        // left outer join employee_detail employeede1_ on employee0_.detail_id=employeede1_.id
+        // group by employeede1_.name having employeede1_.name like ?
+    }
+
+    /**
+     * 使用 构造函数 装载查询出来的数据
+     *
+     * @return
+     */
+    @Override
+    public List<EmployeeResult> findEmployee() {
+        CriteriaBuilder cb = em.getCriteriaBuilder();
+        CriteriaQuery<Employee> query = cb.createQuery(Employee.class);
+        Root<Employee> root = query.from(Employee.class); // 设置查询根，可以根据查询的类型设置不同的
+        Join<Employee, EmployeeDetail> join = root.join(Employee_.detail, JoinType.LEFT);
+        // 使用构造函数 CriteriaBuilder.construct 来完成装载数据
+        query.select(cb.construct(EmployeeResult.class, join.get(EmployeeDetail_.name), join.get(EmployeeDetail_.age)));
+        // 设置排序规则
+        Order order = cb.asc(root.get(Employee_.id));
+        query.orderBy(order);
         TypedQuery typedQuery = em.createQuery(query); // TypedQuery执行查询与获取元模型实例
         return typedQuery.getResultList();
     }

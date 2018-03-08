@@ -68,5 +68,23 @@ public class EmployeeServiceImplTest {
         Assert.assertThat(1L, Matchers.equalTo(list.get(0).getId()));
     }
 
+    @Test
+    public void testListByAge1() {
+        List<Employee> list = employeeService.listByAge1(24);
+        Assert.assertThat(1L, Matchers.equalTo(list.get(0).getId()));
+    }
+
+    @Test
+    public void groupByName() {
+        List list = employeeService.groupByName("o");
+        System.out.println(list);
+    }
+
+    @Test
+    public void testFindEmployee() {
+        List list = employeeService.findEmployee();
+        System.out.println(list);
+    }
+
 
 } 
