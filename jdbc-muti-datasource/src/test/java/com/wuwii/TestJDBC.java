@@ -27,16 +27,16 @@ public class TestJDBC {
 
     @Before
     public void before() {
-        jdbcTemplate.execute("DELETE FORM employee");
-        jdbcTemplate1.execute("DELETE FORM employee");
+        jdbcTemplate.update("DELETE FROM employee");
+        jdbcTemplate1.update("DELETE FROM employee");
     }
 
     @Test
     public void testJDBC() {
         jdbcTemplate.update("insert into employee(id,name,age) VALUES (1, 'wuwii', 24)");
         jdbcTemplate1.update("insert into employee(id,name,age) VALUES (1, 'kronchan', 23)");
-        Assert.assertThat("wuwii", Matchers.equalTo(jdbcTemplate.queryForObject("select name form employee where id=1", String.class)));
-        Assert.assertThat("kronchan", Matchers.equalTo(jdbcTemplate1.queryForObject("select name form employee where id=1", String.class)));
+        Assert.assertThat("wuwii", Matchers.equalTo(jdbcTemplate.queryForObject("SELECT name FROM employee WHERE id=1", String.class)));
+        Assert.assertThat("kronchan", Matchers.equalTo(jdbcTemplate1.queryForObject("SELECT name FROM employee WHERE id=1", String.class)));
 
     }
 }
