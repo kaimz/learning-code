@@ -1,6 +1,8 @@
-package com.wuwii.entity;
+package com.wuwii.module.system.entity;
 
+import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -15,6 +17,8 @@ import java.io.Serializable;
  */
 @Entity
 @Data
+@AllArgsConstructor
+@NoArgsConstructor
 public class Employee implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
