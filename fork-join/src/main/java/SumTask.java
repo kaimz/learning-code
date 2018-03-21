@@ -50,7 +50,7 @@ public class SumTask extends RecursiveTask<Integer> {
                 }
                 sum += i;
             }
-            System.out.println(Thread.currentThread().getName() + "结果是：" + sum);
+            System.out.println(Thread.currentThread().getName() + " result is ：" + sum);
             return sum;
         } else {
             int division = (start + end) >> 1;
