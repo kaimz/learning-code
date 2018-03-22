@@ -1,12 +1,15 @@
 package com.wuwii.factory;
 
+import com.sun.istack.internal.NotNull;
+
 /**
+ * 工厂模式，直接利用面向对象和反射实现工厂
  * @author Zhang Kai
  * @version 1.0
  * @since <pre>2018/3/21 18:50</pre>
  */
 public class CoderFactory {
-    public static Object getCoder(Class<? extends Coding> clazz) {
+    public static Object getCoder(@NotNull Class<? extends Coding> clazz) {
         Object object = null;
         try {
             object = Class.forName(clazz.getName()).newInstance();
@@ -17,9 +20,9 @@ public class CoderFactory {
     }
 
     public static void main(String[] args) {
-        CoderJava java = (CoderJava) CoderFactory.getCoder(CoderJava.class);
+        Coding java = (CoderJava) CoderFactory.getCoder(CoderJava.class);
         java.code();
-        CoderPython python = (CoderPython) CoderFactory.getCoder(CoderPython.class);
+        Coding python = (CoderPython) CoderFactory.getCoder(CoderPython.class);
         python.code();
     }
 }
