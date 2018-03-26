@@ -1,5 +1,6 @@
 package com.wuwii.service1;
 
+import com.querydsl.core.QueryResults;
 import com.wuwii.entity.Employee;
 import org.springframework.data.domain.Pageable;
 
@@ -10,11 +11,11 @@ import org.springframework.data.domain.Pageable;
  * @since <pre>2018/3/26 18:38</pre>
  */
 public interface EmployeeService1 {
-    void save(Employee employee);
+    long save(Employee employee);
 
-    void update(Employee employee);
+    long update(Employee employee);
 
-    void findOne(Long id);
+    Employee findOne(Long id);
 
-    void page(Employee employee, Pageable pageable);
+    QueryResults<Employee> page(Employee employee, Pageable pageable);
 }
