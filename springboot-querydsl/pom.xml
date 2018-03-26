@@ -62,6 +62,13 @@
 			<groupId>com.querydsl</groupId>
 			<artifactId>querydsl-jpa</artifactId>
 		</dependency>
+        <!--我的项目采用注入 jpaQueryFactory 后会出现 ClassNotFoundException: javax.inject.Provider-->
+		<dependency>
+			<groupId>org.glassfish.hk2.external</groupId>
+			<artifactId>javax.inject</artifactId>
+			<version>2.5.0-b61</version>
+		</dependency>
+
 	</dependencies>
 
 	<build>
