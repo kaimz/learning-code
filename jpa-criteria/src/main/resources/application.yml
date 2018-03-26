@@ -15,4 +15,4 @@ spring:
       ddl-auto: update
     properties:
       hibernate:
-        dialect: org.hibernate.dialect.MySQLDialect
+        dialect: org.hibernate.dialect.MySQL57Dialect # 方言根据 数据库版本选择吧
