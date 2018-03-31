@@ -2,22 +2,13 @@
 <html>
 <head>
     <meta charset="UTF-8">
-    <title>HTML5 SVG 3D蝴蝶飞舞动画</title>
+    <title>Wu - Home page of wuwii</title>
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <meta name="keywords" content="1075199251,张凯,18772383543,wuwii,追光者w,有梦想的咸鱼,一棵树站在原野上,Slience">
+    <link rel="icon" href="http://blog.wuwii.com/images/favicon.ico?v=5.1.1" type="image/x-icon">
     <link rel="stylesheet" href="css/reset.css">
     <link rel="stylesheet" href="css/style.css" media="screen" type="text/css"/>
-    <link rel="stylesheet" href="main1.css" media="screen" type="text/css"/>
-    <style>
-        .animate-init {
-            position: relative;
-            top: -10px;
-            opacity: 0;
-        }
-        body {
-            font: 16px/1.8 "Lato", "Microsoft Jhenghei", "Hiragino Sans GB", "Microsoft YaHei", arial, sans-serif;
-            color: #333;
-        }
-    </style>
+    <link rel="stylesheet" href="css/main.css" media="screen" type="text/css"/>
 </head>
 <body>
 <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace" class="svg-defs">
@@ -54,14 +45,8 @@
 
   </defs>
 </svg>
-<div style="text-align:center;clear:both;position:absolute;top:30px;left:260px;z-index:999">
-    <script src="/gg_bd_ad_720x90.js" type="text/javascript"></script>
-    <script src="/follow.js" type="text/javascript"></script>
-</div>
 <section class="background"></section>
-
 <section class="scene3d">
-
     <div class="cube skybox">
         <var class="scale">
             <figure class="face front"></figure>
@@ -72,7 +57,6 @@
             <figure class="face bottom"></figure>
         </var>
     </div>
-
     <div class="butterfly_container">
         <var class="rotate3d">
             <var class="scale">
@@ -91,7 +75,6 @@
             </var>
         </var>
     </div>
-
     <div class="butterfly_container"
          style="margin-top: -150px; margin-left: 140px;
               -webkit-animation-duration: 5s;
@@ -126,7 +109,6 @@
             </var>
         </var>
     </div>
-
     <div class="butterfly_container scale_half"
          style="margin-top: -10px; margin-left: 50px;
               -webkit-animation-duration: 5s;
@@ -161,7 +143,6 @@
             </var>
         </var>
     </div>
-
     <div class="butterfly_container scale_half"
          style="margin-top: 20px;
               -webkit-animation-duration: 20s;
@@ -196,7 +177,6 @@
             </var>
         </var>
     </div>
-
     <div class="butterfly_container scale_half"
          style="margin-top: 100px; margin-left: 50px;
               -webkit-animation-duration: 20s;
@@ -231,7 +211,6 @@
             </var>
         </var>
     </div>
-
     <div class="butterfly_container scale_third"
          style="margin-top: 150px;
               -webkit-animation-duration: 20s;
@@ -266,7 +245,6 @@
             </var>
         </var>
     </div>
-
     <div class="butterfly_container scale_third"
          style="margin-top: -250px; margin-left: 300px;
               -webkit-animation-duration: 4s;
@@ -301,26 +279,26 @@
             </var>
         </var>
     </div>
-
 </section>
-
-<div class="menu" style="position: absolute;bottom: 50px;right: 50px">
-    <a class="animate-init" href="http://blog.wuwii.com">Blog</a>
-    <a class="animate-init">哈哈啊哈哈</a>
-    <a class="animate-init">哈哈啊哈哈</a>
+<div class="menu showmsg">
+    <a class="animate-init click" rel="noopener noreferrer">Blog</a>
+    <a class="animate-init click" rel="external nofollow noopener noreferrer">Github</a>
+    <a class="animate-init" rel="external nofollow noopener noreferrer">@KronChan</a>
+    <div class="location">
+        <i class="location-icon"></i>
+        <span class="location-text animate-init">Wuhan - China</span>
+    </div>
 </div>
-<div class="location">
-    <i class="location-icon"></i>
-    <span class="location-text animate-init">Wuhan - China</span>
+<div class="relocating">
+    Navigating to: <span class="relocate-location"></span>...
 </div>
-
 </body>
-<script type="text/javascript" src="index.js"></script>
+<script type="text/javascript" src="js/index.js"></script>
 <script>
     $(document).ready(function () {
         var delay = 1;
         var DELAY_STEP = 200;
-        var animationOptions = { opacity: 1, top: 0};
+        var animationOptions = {opacity: 1, top: 0};
 
         $('h1').animate(animationOptions).promise()
             .pipe(animateMain)
@@ -347,7 +325,25 @@
             }).promise().done(animationQuote);
         }
 
-        function animationQuote() {}
+        function animationQuote() {
+        }
+
+        $(".click:contains(Blog)").on('click', function (event) {
+            $('.relocate-location').text('Blog Home Page');
+            $('.relocating').css('opacity', 1);
+
+            window.setTimeout(function () {
+                window.location.href = 'http://blog.wuwii.com';
+            }, 1000);
+        });
+        $(".click:contains(Github)").on('click', function (event) {
+            $('.relocate-location').text('My Github Page');
+            $('.relocating').css('opacity', 1);
+
+            window.setTimeout(function () {
+                window.location.href = 'https://github.com/kaimz';
+            }, 1000);
+        });
     });
 </script>
 </html>

@@ -17,82 +17,24 @@ a {
     color: #333;
 }
 
-p {
-    margin: 20px 0;
-}
-
-ul, ol {
-    list-style: none;
-}
-
-.vi {
-    position: relative;
-    margin: 100px auto 0;
-    width: 960px;
-}
-
-@media (max-width: 767px) {
-    .vi {
-        margin-top: 50px;
-        width: auto;
-    }
-}
-
-.vi h1 {
-    text-align: center;
-    position: relative;
-    top: -10px;
-    opacity: 0;
-}
-
-.quote {
-    position: relative;
-    margin: 40px 0;
-    color: #666;
-    text-align: center;
-}
-
-.quote::before, .quote::after {
-    position: absolute;
-    content: ' ';
-    display: block;
-    width: 100%;
-    height: 24px;
-    opacity: 0.2;
-
-}
-
-.quote::before {
-    top: -20px;
-    border-top: 1px solid #ccc;
-    background: url("data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiA/PjxzdmcgaGVpZ2h0PSI0OCIgdmlld0JveD0iMCAwIDQ4IDQ4IiB3aWR0aD0iNDgiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+PHBhdGggZD0iTTEyIDM0aDZsNC04di0xMmgtMTJ2MTJoNnptMTYgMGg2bDQtOHYtMTJoLTEydjEyaDZ6Ii8+PHBhdGggZD0iTTAgMGg0OHY0OGgtNDh6IiBmaWxsPSJub25lIi8+PC9zdmc+") no-repeat 0 -7px;
-    background-size: 24px 24px;
-}
-
-.quote::after {
-    bottom: -20px;
-    border-bottom: 1px solid #ccc;
-    background: url("data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiA/PjxzdmcgaGVpZ2h0PSI0OCIgdmlld0JveD0iMCAwIDQ4IDQ4IiB3aWR0aD0iNDgiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+PHBhdGggZD0iTTEyIDM0aDZsNC04di0xMmgtMTJ2MTJoNnptMTYgMGg2bDQtOHYtMTJoLTEydjEyaDZ6Ii8+PHBhdGggZD0iTTAgMGg0OHY0OGgtNDh6IiBmaWxsPSJub25lIi8+PC9zdmc+") no-repeat 100% 7px;
-    background-size: 24px 24px;
-}
-
-.quote cite::before {
-    content: "-";
-    padding: 0 5px;
-}
-
-.quote p, .quote div {
-    text-align: center
-}
-
-.quote-text {
-
-}
 
 .menu {
-    margin-top: 40px;
     text-align: center;
     font-size: 14px;
+    position: absolute;
+    bottom: 20px;
+}
+@media (min-width: 750px) {
+    .menu {
+        right: 30px;
+    }
+}
+@media (max-width: 750px) {
+    .menu {
+        right: 0;
+        left: 0;
+        margin-left: auto;
+    }
 }
 
 .menu a {
@@ -127,7 +69,6 @@ ul, ol {
 }
 
 .location {
-    margin-top: 40px;
     text-align: center;
 }
 .location-icon {
@@ -149,6 +90,11 @@ ul, ol {
 }
 
 .relocating {
+    position: absolute;
+    right: 0;
+    left: 0;
+    bottom: 0;
+    margin-left: auto;
     opacity: 0;
     color: #ccc;
     font-size: 13px;
@@ -175,3 +121,7 @@ ul, ol {
 }
 
 .hidden { display: none; }
+
+.click {
+    cursor: pointer;
+}

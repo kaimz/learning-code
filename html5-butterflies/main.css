@@ -104,7 +104,8 @@ ul, ol {
 }
 
 .menu a:hover {
-    border-bottom: 1px solid #333;
+    border-bottom: 1px solid #f33;
+    color: #f33;
 }
 
 .menu a:active {
@@ -175,3 +176,19 @@ ul, ol {
 }
 
 .hidden { display: none; }
+
+p {
+    font-size: 14px;
+    line-height: 2em;
+    margin: 0;
+    letter-spacing: 2px;
+}
+canvas {
+    position: absolute;
+    top: 0;
+    left: 0;
+    z-index: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+}
