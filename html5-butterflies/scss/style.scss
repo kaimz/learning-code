@@ -1,0 +1,343 @@
+@import "compass/css3";
+
+/**
+* MIXINS
+*/
+
+@mixin opacity($alpha) {
+  opacity : $alpha;
+  filter : alpha(opacity=($alpha*100));
+}
+
+@mixin vendor-prefix($name, $argument...) {
+  -webkit-#{$name}: $argument;
+  -moz-#{$name}: $argument;
+  -ms-#{$name}: $argument;
+  -o-#{$name}: $argument;
+  #{$name}: $argument;
+}
+
+@mixin prop-vendor-prefix($name, $argument...) {
+  #{$name}: -webkit-#{$argument};
+  #{$name}: -moz-#{$argument};
+  #{$name}: -ms-#{$argument};
+  #{$name}: -o-#{$argument};
+  #{$name}: $argument;
+}
+
+@mixin hardware_accelerate{
+  @include vendor-prefix(transform, translateZ(0));
+  @include vendor-prefix(transform-style, preserve-3d);
+  @include vendor-prefix(backface-visibility, hidden);
+}
+
+@mixin keyframes($name){
+  @-webkit-keyframes #{$name} {
+    @content;
+  }
+  @-moz-keyframes #{$name} {
+    @content;
+  }
+  @-ms-keyframes #{$name} {
+    @content;
+  }
+  @-o-keyframes #{$name} {
+    @content;
+  }
+  @keyframes #{$name} {
+    @content;
+  }
+}
+
+/* SYMBOLS */
+
+@mixin circle( $radius ){
+  width: #{($radius * 2)}px;
+  height: #{($radius * 2)}px;
+  -webkit-border-radius: #{($radius)}px #{($radius)}px;
+  -moz-border-radius: #{($radius)}px / #{($radius)}px;
+  border-radius: #{($radius)}px / #{($radius)}px;
+}
+
+/**
+  * KEYFRAMES
+  */
+
+@include keyframes( rotating ){
+  0%{
+    @include vendor-prefix( transform, rotate3d( 0,0,0, 0deg));
+  }
+  
+  100%{
+    @include vendor-prefix( transform, rotate3d( 0, 1, 0, 720deg));
+  }
+}
+
+@include keyframes( rotatingY ){
+  100%{
+    @include vendor-prefix( transform, rotateY(-360deg));
+  }
+}
+
+/**/
+
+@include keyframes( fluttering ){
+  0%, 25%, 50%, 75%, 100%{
+    @include vendor-prefix( transform, translate3d( 0,0,0 ));
+  }
+  
+  10%, 60%{
+    @include vendor-prefix( transform, translate3d( 0,150px,0 ));
+  }
+  
+  30%, 80%{
+    @include vendor-prefix( transform, translate3d( 0,50px,0 ));
+  }
+}
+
+/**/
+
+@include keyframes( left-wing-flap ){
+  0%{
+    @include vendor-prefix( transform, translate3d(0,0,0) scaleX(1) rotate3d( 0,1,0, 60deg));
+  }
+  
+  50%{
+    @include vendor-prefix( transform, translate3d(0,0,0) scaleX(1) rotate3d( 0,1,0, -70deg));
+  }
+  
+  100%{
+    @include vendor-prefix( transform, translate3d(0,0,0) scaleX(1) rotate3d( 0,1,0, 60deg));
+  }
+}
+
+
+@include keyframes( right-wing-flap ){
+  0%{
+    @include vendor-prefix( transform, translate3d(0,0,0) scaleX(-1) rotate3d( 0,1,0, 60deg));
+  }
+  
+  50%{
+    @include vendor-prefix( transform, translate3d(0,0,0) scaleX(-1) rotate3d( 0,1,0, -70deg));
+  }
+  
+  100%{
+    @include vendor-prefix( transform, translate3d(0,0,0) scaleX(-1) rotate3d( 0,1,0, 60deg));
+  }
+}
+
+/**
+ *
+ */
+
+
+/**
+  * SOURCE
+  */
+
+body{
+  width: 100%;
+  height:100%;
+  overflow: hidden;
+}
+
+.background{
+  position : absolute;
+  width: 100%;
+  height:100%;
+}
+
+.scene3d{
+  @include vendor-prefix(perspective, 1000px);
+  @include vendor-prefix(perspective-origin,50% 50%);
+  position: absolute;
+  width: 100%;
+  height:100%;
+  @include vendor-prefix( transform-style, preserve-3d);
+}
+
+.skybox.cube{
+  position: absolute;
+  $w: 512px;
+  $h: 512px;
+  left: 50%;
+  top: 50%;
+  width: $w;
+  height: $h;
+  margin-left: -$w / 2;
+  margin-top: -$h / 2;
+  @include vendor-prefix(perspective-origin,50% 50%);
+  @include vendor-prefix(transform-style, preserve-3d);
+  @include vendor-prefix(animation, rotatingY 40s linear infinite );
+  
+  var.scale{
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    width: $w;
+    height: $h;
+    margin-left: -$w / 2;
+    margin-top: -$h / 2;
+    @include vendor-prefix(perspective-origin,50% 50%);
+    @include vendor-prefix(transform-style, preserve-3d);
+    @include vendor-prefix(transform, rotate3d(0,0,1, 15deg) translate3d(0,100px,0) scale3d(4,6,4));
+  }
+  
+  .face{  
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    width: $w;
+    height: $h;
+    margin-left: -$w / 2;
+    margin-top: -$h / 2;
+    
+    @include vendor-prefix( backface-visibility, hidden);
+
+    &.front  { 
+      @include vendor-prefix( transform, rotateY( 0deg ) translateZ( -$w/2 ));
+      //background-position: -$w -$w;
+      background-image: url("https://s3-us-west-2.amazonaws.com/s.cdpn.io/78881/clouds_front.jpg");
+    }
+    &.back   { 
+      @include vendor-prefix( transform, rotateY( 180deg ) translateZ( -$w/2 ));
+      //background-position: -($w*3) -$w;
+      background-image: url("https://s3-us-west-2.amazonaws.com/s.cdpn.io/78881/clouds_back.jpg");
+    }
+    &.right  {
+      @include vendor-prefix( transform, rotateY( -90deg ) translateZ( -$w/2 ));
+      //background-position: -($w*2) -$w;
+      background-image: url("https://s3-us-west-2.amazonaws.com/s.cdpn.io/78881/clouds_right.jpg");
+    }
+    &.left{
+      @include vendor-prefix( transform, rotateY(90deg ) translateZ( -$w/2 ));
+      //background-position: 0 -$w;
+      background-image: url("https://s3-us-west-2.amazonaws.com/s.cdpn.io/78881/clouds_left.jpg");
+    }
+    &.top{ 
+      @include vendor-prefix( transform, rotateX( -90deg ) translateZ( -$w/2 ));
+      //background-position: -$w 0;
+      //display: none;
+      background-image: url("https://s3-us-west-2.amazonaws.com/s.cdpn.io/78881/clouds_top.jpg");
+    }
+    &.bottom {
+      @include vendor-prefix( transform, rotateX( 90deg ) translateZ( -$w/2 ));
+      background-image: url("https://s3-us-west-2.amazonaws.com/s.cdpn.io/78881/hazy_lake_top.jpg");
+      background: none;
+    }
+  }
+} 
+
+.butterfly_container{
+  $w : 100px;
+  $h : 100px;
+  $d: 100px;
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  width: $w;
+  height: $h;
+  margin-left: -$w / 2;
+  margin-top: -$h / 2;
+  @include vendor-prefix( transform-origin, 50% 50% );
+  @include vendor-prefix( transform-style, preserve-3d);
+  @include vendor-prefix( animation, rotatingY 10s linear infinite );
+  
+  var{
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    width: $w;
+    height: $h;
+    margin-left: -$w / 2;
+    margin-top: -$h / 2;
+    @include vendor-prefix( transform-style, preserve-3d);
+    
+    &.scale{
+      
+    }
+    
+    &.rotate3d{
+      @include vendor-prefix( transform, rotate3d( 1,.5,0, 70deg));
+    }
+    
+    &.translate3d{
+      @include vendor-prefix( transform, translate3d( -300px,0px,0px));
+    }
+    
+    &.translate3d-1{
+      @include vendor-prefix(animation, fluttering 10s ease-in-out infinite );
+    }
+  }
+  
+  &.scale_half{
+    var.scale{
+      @include vendor-prefix( transform, scale3d(.5,.5,.5) );
+    }
+  }
+  
+  &.scale_third{
+    var.scale{
+      @include vendor-prefix( transform, scale3d(.333,.333,.333) );
+    }
+  }
+  
+    
+  &.scale_quarter{
+    var.scale{
+      @include vendor-prefix( transform, scale3d(.25,.25,.25) );
+    }
+  }
+  
+  
+  figure.butterfly{
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    width: 100px;
+    height: 100px;
+    margin-left: -50px;
+    margin-top: -50px;
+    @include vendor-prefix( transform-style, preserve-3d);
+    @include vendor-prefix( transform-origin, 50% 50% );
+    //@include vendor-prefix(animation, rotating 30s linear infinite );
+    .wing{
+      position: absolute;
+      width: 50px;
+      height: 100px;
+      @include vendor-prefix( transform-style, preserve-3d);
+      @include vendor-prefix( transform-origin, 50% 50% );
+      @include vendor-prefix( transform, translate3d(0,0,0) rotate3d( 1,.5,0, 45deg));
+    
+      &.right{
+        @include vendor-prefix( transform-origin, 50px 50px );
+        @include vendor-prefix( transform, translate3d(0px,0,0) scaleX(-1) rotate3d( 0,1,0, 45deg));
+        @include vendor-prefix(animation, right-wing-flap .5s ease-in-out infinite );
+        filter: FlipH;
+        -ms-filter: "FlipH";
+     }
+    
+      &.left{
+        @include vendor-prefix( transform-origin, 50px 50px );
+        @include vendor-prefix(animation, left-wing-flap .5s ease-in-out infinite );
+      }
+    
+      use{
+        display: block;
+        @include vendor-prefix( transform-style, preserve-3d);
+        fill: url(#image);
+        stroke: white;
+      }
+    }
+  }
+}
+
+//
+
+.svg-defs{
+  position: absolute;
+  height: 0;
+  width: 0;
+  //visibility: hidden;
+  //display: none;
+}
