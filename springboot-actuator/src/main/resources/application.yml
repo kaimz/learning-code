@@ -1,0 +1,17 @@
+server:
+  port: 8003
+management:
+  security:
+    enabled: false
+  endpoint:
+    shutdown:
+      enabled: true
+  server:
+    port: 8004
+    servlet:
+      context-path: /monitor
+info:
+ app:
+   name: springboot-actuator
+   version: v1.0.0
+
