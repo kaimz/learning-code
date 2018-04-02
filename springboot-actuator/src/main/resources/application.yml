@@ -1,15 +1,14 @@
 server:
   port: 8003
 management:
-  security:
-    enabled: false
-  endpoint:
-    shutdown:
-      enabled: true
-  server:
-    port: 8004
-    servlet:
-      context-path: /monitor
+  endpoints:
+    web:
+      exposure:
+        include: "*" # 开启全部的 endpoints
+#  server:
+#    port: 8004
+#    servlet:
+#      context-path: /monitor
 info:
  app:
    name: springboot-actuator
