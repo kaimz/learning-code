@@ -1,0 +1,58 @@
+version: '3'
+services:
+  web:
+    depends_on:
+      - db
+    ports:
+      - "8081:8080" # 建议加上引号，如果单独两位数的数字，可能出现解析问题
+    # restart: always Swarm 中将不会生效
+    # build: ./src/docker/
+    #  context: ./src/docker # Dockerfile 文件的目录，可以远程地址，绝对 or 相对
+     # dockerfile: Dockerfile # 如果你的 Dockerfile 重命名了，需要指定
+    image: test:latest
+    environment:
+      DB_HOST: db:3306
+      DATABASE: learn
+      DB_USERNAME: root # 测试用下 root
+      DB_PASSWORD: 123456 #  # 建议使用 secret
+    deploy:
+      replicas: 3
+      update_config:
+        parallelism: 2
+        delay: 10s
+      restart_policy:
+        condition: on-failure
+
+  db:
+    image: mysql:5.7
+    volumes:
+        - db_data:/var/lib/mysql
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: 123456
+      MYSQL_DATABASE: learn
+      MYSQL_USER: kronchan
+      MYSQL_PASSWORD: 123456
+    deploy:
+      placement:
+        constraints: [node.role == manager]
+      replicas: 1
+      restart_policy:
+        condition: on-failure
+
+  visualizer:
+    image: dockersamples/visualizer:stable
+    ports:
+      - "8080:8080"
+    stop_grace_period: 1m30s
+    volumes:
+      - "/var/run/docker.sock:/var/run/docker.sock"
+    deploy:
+      placement:
+      constraints: [node.role == manager]
+
+volumes:
+  db_data:  # 使用的数据卷必须声明
+networks:
+  overlay:
+
