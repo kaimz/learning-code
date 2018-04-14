@@ -3,6 +3,8 @@ services:
   web:
     depends_on:
       - db
+    networks:
+      - overlay
     ports:
       - "8081:8080" # 建议加上引号，如果单独两位数的数字，可能出现解析问题
     # restart: always Swarm 中将不会生效
@@ -15,7 +17,8 @@ services:
       DATABASE: learn
       DB_USERNAME: root # 测试用下 root
       DB_PASSWORD: 123456 #  # 建议使用 secret
-    deploy:
+    deploy: # swarm 项目中有的
+      mode: replicated
       replicas: 3
       update_config:
         parallelism: 2
@@ -25,9 +28,11 @@ services:
 
   db:
     image: mysql:5.7
+    networks:
+      - overlay
     volumes:
-        - db_data:/var/lib/mysql
-    restart: always
+      - db_data:/var/lib/mysql
+    # restart: always 失效
     environment:
       MYSQL_ROOT_PASSWORD: 123456
       MYSQL_DATABASE: learn
@@ -49,7 +54,7 @@ services:
       - "/var/run/docker.sock:/var/run/docker.sock"
     deploy:
       placement:
-      constraints: [node.role == manager]
+        constraints: [node.role == manager]
 
 volumes:
   db_data:  # 使用的数据卷必须声明
