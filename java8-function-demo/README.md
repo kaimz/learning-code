@@ -1,0 +1,2 @@
+JDK 1.8 API包含了很多内建的函数式接口，在老Java中常用到的比如Comparator或者Runnable接口，这些接口都增加了@FunctionalInterface注解以便能用在lambda上。
+Java 8 API同样还提供了很多全新的函数式接口来让工作更加方便，
