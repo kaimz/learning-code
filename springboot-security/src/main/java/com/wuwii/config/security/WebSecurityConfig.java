@@ -16,6 +16,9 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 /**
  * http://nealma.com/2016/04/30/spring-boot-4-security/
  * https://juejin.im/entry/5990130cf265da3e213f0f81
+ *
+ * http://www.spring4all.com/article/420
+ * https://juejin.im/post/59d5bbebf265da066c233d0e
  * @author kronchan
  */
 @Configuration
