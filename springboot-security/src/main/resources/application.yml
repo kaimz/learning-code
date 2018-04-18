@@ -10,6 +10,15 @@ spring:
     username: root
     password: 123456
     driver-class-name: com.mysql.jdbc.Driver
+ # jackson时间格式化
+  jackson:
+    time-zone: GMT+8
+    date-format: yyyy-MM-dd HH:mm:ss
+  http:
+    encoding:
+      force: true
+      charset: utf-8
+      enabled: true
   jpa:
     show-sql: true
     database: mysql
@@ -18,3 +27,12 @@ spring:
     properties:
       hibernate:
         dialect: org.hibernate.dialect.MySQL57Dialect
+
+# jwt 配置
+jwt:
+  # 加密密钥
+  secret: 61D73234C4F93E03074D74D74D1E39D9 #blog.wuwii.com
+  # token有效时长
+  expire: 7 # 7天，单位天
+  # token 存在 header 中的参数
+  header: token

@@ -1,5 +1,6 @@
 package com.wuwii.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Data;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.security.core.GrantedAuthority;
@@ -45,21 +46,29 @@ public class User implements UserDetails {
         return auths;
     }
 
+    // 账户是否未过期
+    @JsonIgnore
     @Override
     public boolean isAccountNonExpired() {
         return true;
     }
 
+    // 账户是否未锁定
+    @JsonIgnore
     @Override
     public boolean isAccountNonLocked() {
         return true;
     }
 
+    // 密码是否未过期
+    @JsonIgnore
     @Override
     public boolean isCredentialsNonExpired() {
         return true;
     }
 
+    // 账户是否激活
+    @JsonIgnore
     @Override
     public boolean isEnabled() {
         return true;
