@@ -23,6 +23,7 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
 /**
+ * https://blog.csdn.net/itguangit/article/details/78960127
  * auth 拦截器
  * @author KronChan
  * @version 1.0
@@ -64,7 +65,7 @@ public class AuthenticationTokenFilter extends UsernamePasswordAuthenticationFil
         UsernamePasswordAuthenticationToken authentication =
                 new UsernamePasswordAuthenticationToken(userDetails, null, userDetails.getAuthorities());
         authentication.setDetails(new WebAuthenticationDetailsSource().buildDetails(httpRequest));
-        // 将权限写入本次会话
+        // 将结果放入安全上下文
         SecurityContextHolder.getContext().setAuthentication(authentication);
     }
 
@@ -97,8 +98,24 @@ public class AuthenticationTokenFilter extends UsernamePasswordAuthenticationFil
         return token;
     }
 
+
+    /**
+     *  返回给客户端 token
+     * @throws IOException
+     */
     private void onSuccess(HttpServletResponse response, String token) throws IOException {
         ((HttpServletResponse) response).setStatus(HttpStatus.OK.value());
         ((HttpServletResponse) response).getWriter().print(token);
+    }
+
+    /**
+     * 登陆成功调用
+     */
+    @Override
+    protected void successfulAuthentication(HttpServletRequest request,
+                                            HttpServletResponse response,
+                                            FilterChain chain, Authentication authResult) throws IOException {
+        String token = jwtUtil.generateToken(authResult.getName());
+        onSuccess(response, token);
     }
 }
