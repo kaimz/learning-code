@@ -12,6 +12,7 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 
 /**
  * http://nealma.com/2016/04/30/spring-boot-4-security/
@@ -70,19 +71,19 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .anyRequest().authenticated()
                 .and()
                 // 登陆页面
-                .formLogin()
+                //.formLogin()
                 //.loginPage("/login.html")
                 // 登陆成功跳转页面
-                .defaultSuccessUrl("/").failureForwardUrl("/login.html").permitAll()
-                .and()
+               // .defaultSuccessUrl("/").failureForwardUrl("/login.html").permitAll()
+               // .and()
                 // 登出
                 .logout()
                 // 注销的时候删除会话
                 .deleteCookies("JSESSIONID")
                 // 默认登出请求为 /logout，可以用下面自定义
-                //.logoutUrl("/custom.logout")
+                .logoutRequestMatcher(new AntPathRequestMatcher("/logout"))
                 // 自定义登出成功的页面，默认为登陆页
-                //.logoutSuccessUrl("/logout.html")
+                .logoutSuccessUrl("/logout.html")
                 .permitAll()
                 .and()
                 // 开启 cookie 保存用户信息
