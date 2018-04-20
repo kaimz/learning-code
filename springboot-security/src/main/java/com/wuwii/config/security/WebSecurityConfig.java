@@ -94,7 +94,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .and()
                 .authorizeRequests()
                 // 需要权限验证
-                .anyRequest().authenticated()
+                .mvcMatchers("/user/**").authenticated()
                 .and()
                 // 登陆页面
                 .formLogin()
@@ -137,10 +137,13 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         web
                 .ignoring()
                 .antMatchers(
-                        "/js/**",
-                        "/css/**",
+                        "**.js",
+                        "**.css",
                         "/images/**",
-                        "/**/favicon.ico"
+                        "/webjars/**",
+                        "/**/favicon.ico",
+                        "/swagger-ui.html",
+                        "/swagger-resources/**"
                 );
     }
 }

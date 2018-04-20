@@ -4,6 +4,7 @@ import com.wuwii.util.JwtUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
 import javax.servlet.FilterChain;
@@ -30,8 +31,18 @@ public class LoginFilter extends UsernamePasswordAuthenticationFilter {
      */
     @Override
     public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain) throws IOException, ServletException {
-        // todo 可以做些其他的验证操作，比如验证码
+        // todo 在这里可以按需求进行过滤，根据源码来修改扩展非常方便
         super.doFilter(request, response, chain);
+    }
+
+    /**
+     * 如果需要进行登陆认证，会在这里进行预处理
+     */
+    @Override
+    public Authentication attemptAuthentication(HttpServletRequest request,
+                                                HttpServletResponse response) throws AuthenticationException {
+        // todo 在登陆认证的时候，可以做些其他的验证操作，比如验证码
+        return super.attemptAuthentication(request, response);
     }
 
     /**
