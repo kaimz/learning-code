@@ -18,7 +18,7 @@ import java.util.Collection;
  *
  */
 @Slf4j
-public class MyAuthenticationProvider implements AuthenticationProvider {
+public class CustomAuthenticationProvider implements AuthenticationProvider {
     @Autowired
     private UserDetailsService userDetailsService;
 

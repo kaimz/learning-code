@@ -5,6 +5,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.context.support.DefaultMessageSourceResolvable;
 import org.springframework.dao.DuplicateKeyException;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.AccessDeniedException;
 import org.springframework.validation.BindException;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
@@ -61,6 +62,12 @@ public class ExceptionHandler {
     public ResponseEntity<String> handleDuplicateKeyException(DuplicateKeyException e) {
         LOGGER.debug(e.getMessage(), e);
         return ResponseEntity.status(CONFLICT).body("数据库中已存在该记录");
+    }
+
+    @org.springframework.web.bind.annotation.ExceptionHandler(AccessDeniedException.class)
+    public ResponseEntity<String> handleException(AccessDeniedException e) {
+        LOGGER.debug(e.getMessage(), e);
+        return ResponseEntity.status(UNAUTHORIZED).body("不允许访问");
     }
 
 

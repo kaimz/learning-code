@@ -3,13 +3,15 @@ package com.wuwii.service.impl;
 import com.wuwii.dao.UserDao;
 import com.wuwii.entity.User;
 import com.wuwii.service.UserService;
-import com.wuwii.vo.UserAddVO;
+import com.wuwii.vo.UserAddDTO;
+import com.wuwii.vo.UserVO;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.Date;
+import java.util.LinkedList;
 import java.util.List;
 
 /**
@@ -21,6 +23,22 @@ public class UserServiceImpl implements UserService {
     private UserDao userDao;
     @Autowired
     private PasswordEncoder passwordEncoder;
+
+    @Override
+    public UserVO castUserVO(User user) {
+        return null;
+    }
+
+    @Override
+    public List<UserVO> castUserVO(List<User> users) {
+        List<UserVO> userViews = new LinkedList<>();
+        for (User user : users) {
+            UserVO userView = new UserVO();
+            BeanUtils.copyProperties(user, userView);
+            userViews.add(userView);
+        }
+        return userViews;
+    }
 
     @Override
     public List<User> findAll() {
@@ -35,7 +53,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public void insertUser(UserAddVO userVO) {
+    public void insertUser(UserAddDTO userVO) {
         User user = new User();
         BeanUtils.copyProperties(userVO, user);
         insertUser(user);

@@ -6,7 +6,7 @@ import lombok.Data;
  *
  */
 @Data
-public class UserAddVO {
+public class UserAddDTO {
     private String username;
     private String password;
 }

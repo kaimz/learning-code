@@ -41,7 +41,8 @@ public class User implements UserDetails {
     public Collection<? extends GrantedAuthority> getAuthorities() {
         List<GrantedAuthority> auths = new ArrayList<>(userRoles.size());
         userRoles.parallelStream().forEach(userRole -> {
-            auths.add(new SimpleGrantedAuthority(userRole.getRole().getName()));
+            // ROLE_  为前缀
+            auths.add(new SimpleGrantedAuthority("ROLE_" + userRole.getRole().getName()));
         });
         return auths;
     }

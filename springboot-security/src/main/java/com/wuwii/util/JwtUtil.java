@@ -4,13 +4,11 @@ import com.wuwii.excetion.KCException;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.Data;
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang.time.DateUtils;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.http.HttpStatus;
-import org.springframework.stereotype.Component;
 
 import java.util.Date;
 
@@ -20,9 +18,7 @@ import java.util.Date;
  * @since <pre>2018/4/18 22:45</pre>
  */
 @ConfigurationProperties(prefix = "jwt")
-@Component
-@Setter
-@Getter
+@Data
 public class JwtUtil {
     /**
      * 密钥
