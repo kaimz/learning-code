@@ -25,7 +25,7 @@ public class UserController {
     private UserService userService;
 
     @GetMapping
-    @PreAuthorize("hasPermission()")
+    @PreAuthorize("hasRole('admin')")
     public ResponseEntity<List<UserVO>> getAllUser() {
         List<User> users = userService.findAll();
         List<UserVO> userViews = userService.castUserVO(users);
