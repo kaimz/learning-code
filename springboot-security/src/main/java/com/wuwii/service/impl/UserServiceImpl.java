@@ -7,6 +7,8 @@ import com.wuwii.vo.UserAddDTO;
 import com.wuwii.vo.UserVO;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.CacheConfig;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -18,6 +20,7 @@ import java.util.List;
  *
  */
 @Service
+@CacheConfig(cacheNames = "users")
 public class UserServiceImpl implements UserService {
     @Autowired
     private UserDao userDao;
@@ -41,6 +44,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    @Cacheable
     public List<User> findAll() {
         return userDao.findAll();
     }

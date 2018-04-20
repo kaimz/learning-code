@@ -27,7 +27,10 @@ spring:
     properties:
       hibernate:
         dialect: org.hibernate.dialect.MySQL57Dialect
-
+  cache:
+    ehcache:
+      config: config/ehcache.xml # 指定 ehcache.xml 创建EhCache的缓存管理器
+    type: ehcache # 指定缓存管理器
 # jwt 配置
 jwt:
   # 加密密钥
