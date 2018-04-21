@@ -80,6 +80,6 @@ public class ExceptionHandler {
     @org.springframework.web.bind.annotation.ExceptionHandler(Exception.class)
     public ResponseEntity<String> handleException(Exception e) {
         LOGGER.error(e.getMessage(), e);
-        return ResponseEntity.status(INTERNAL_SERVER_ERROR).build();
+        return ResponseEntity.status(INTERNAL_SERVER_ERROR).body("服务异常");
     }
 }

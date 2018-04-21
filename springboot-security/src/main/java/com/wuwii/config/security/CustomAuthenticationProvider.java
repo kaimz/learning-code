@@ -25,6 +25,9 @@ public class CustomAuthenticationProvider implements AuthenticationProvider {
     @Autowired
     private PasswordEncoder passwordEncoder;
 
+    /**
+     * 验证登录信息,若登陆成功,设置 Authentication
+     */
     @Override
     public Authentication authenticate(Authentication authentication) throws AuthenticationException {
         String username = authentication.getName();
@@ -37,6 +40,9 @@ public class CustomAuthenticationProvider implements AuthenticationProvider {
         throw new BadCredentialsException("The password is not correct.");
     }
 
+    /**
+     * 是否支持对该类型的凭证提供认证服务
+     */
     @Override
     public boolean supports(Class<?> authentication) {
         return true;

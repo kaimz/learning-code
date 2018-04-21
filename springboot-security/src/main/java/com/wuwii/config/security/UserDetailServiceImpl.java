@@ -29,6 +29,6 @@ public class UserDetailServiceImpl implements UserDetailsService {
             throw new UsernameNotFoundException("Username is not valid.");
         }
         log.debug("The User is {}", user);
-        return user;
+        return SecurityModelFactory.create(user);
     }
 }

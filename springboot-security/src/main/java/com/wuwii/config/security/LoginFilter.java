@@ -46,7 +46,7 @@ public class LoginFilter extends UsernamePasswordAuthenticationFilter {
     }
 
     /**
-     * 登陆成功调用
+     * 登陆成功调用，返回 token
      */
     @Override
     protected void successfulAuthentication(HttpServletRequest request,

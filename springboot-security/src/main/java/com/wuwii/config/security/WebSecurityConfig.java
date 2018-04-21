@@ -14,7 +14,6 @@ import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 
 /**
  * http://nealma.com/2016/04/30/spring-boot-4-security/
@@ -25,10 +24,11 @@ import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
  * @author kronchan
  */
 @Configuration
-@EnableWebSecurity
+@EnableWebSecurity // 开启 Security
 @EnableGlobalMethodSecurity(prePostEnabled = true, securedEnabled = true, jsr250Enabled = true)
-//jsr250有三个注解，分别是@RolesAllowed,@PermitAll,@DenyAll,功能跟名字一样，
+//jsr250Enabled有三种注解，分别是@RolesAllowed,@PermitAll,@DenyAll,功能跟名字一样，
 // securedEnabled 开启注解
+// prePostEnabled  类似用的最多的是 @PreAuthorize
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     @Bean
     public JwtUtil jwtUtil() {
@@ -36,7 +36,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     }
 
     /**
-     * 注入 loginfilter 时候需要，注入 authenticationManager
+     * 注入 LoginFilter 时候需要，注入 authenticationManager
      */
     @Bean
     public LoginFilter loginFilter() throws Exception {
@@ -54,6 +54,9 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         return new UserDetailServiceImpl();
     }
 
+    /**
+     * 认证
+     */
     @Bean
     public AuthenticationProvider authenticationProvider() {
         return new CustomAuthenticationProvider();
@@ -68,10 +71,9 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     public PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder(5);
     }
+
     /**
-     *
-     * @param auth
-     * @throws Exception
+     * 主要是对身份验证的设置
      */
     @Override
     protected void configure(AuthenticationManagerBuilder auth) throws Exception {
@@ -82,12 +84,21 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .userDetailsService(userDetailsService())
                 // 默认登陆的加密，自定义登陆的时候无效
                 .passwordEncoder(passwordEncoder());
+        // 在内存中设置固定的账户密码以及身份信息
+        /*auth
+                .inMemoryAuthentication().withUser("user").password("password").roles("USER").and()
+                .withUser("admin").password("password").roles("USER", "ADMIN");*/
     }
 
+    /**
+     *
+     * @param http
+     * @throws Exception
+     */
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http
-                // 开发的时候关闭 csrf 不然不好调试
+                // 关闭 csrf
                 .csrf().disable()
                 // 设置 session 状态 STATELESS 无状态
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
@@ -105,25 +116,25 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .permitAll()
                 .and()
                 // 登出
-                .logout()
+                //.logout()
                 // 注销的时候删除会话
-                .deleteCookies("JSESSIONID")
+                //.deleteCookies("JSESSIONID")
                 // 默认登出请求为 /logout，可以用下面自定义
-                .logoutRequestMatcher(new AntPathRequestMatcher("/logout"))
+                //.logoutRequestMatcher(new AntPathRequestMatcher("/logout"))
                 // 自定义登出成功的页面，默认为登陆页
-                .logoutSuccessUrl("/logout.html")
-                .permitAll()
-                .and()
+                //.logoutSuccessUrl("/logout.html")
+                //.permitAll()
+                //.and()
                 // 开启 cookie 保存用户信息
-                .rememberMe()
+                //.rememberMe()
                 // cookie 有效时间
-                .tokenValiditySeconds(60 * 60 * 24 * 7)
+                //.tokenValiditySeconds(60 * 60 * 24 * 7)
                 // 设置cookie 的私钥，默认为随机生成的key
-                .key("remember")
-                .and()
-                //验证登陆
+                //.key("remember")
+                //.and()
+                //验证登陆的 filter
                 .addFilter(loginFilter())
-                //验证token
+                //验证token的 filter
                 .addFilter(jwtAuthenticationFilter());
     }
 
@@ -141,9 +152,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                         "**.css",
                         "/images/**",
                         "/webjars/**",
-                        "/**/favicon.ico",
-                        "/swagger-ui.html",
-                        "/swagger-resources/**"
+                        "/**/favicon.ico"
                 );
     }
 }
