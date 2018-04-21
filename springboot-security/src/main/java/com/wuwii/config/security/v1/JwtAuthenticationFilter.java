@@ -1,4 +1,4 @@
-package com.wuwii.config.security;
+package com.wuwii.config.security.v1;
 
 import com.wuwii.util.JwtUtil;
 import org.springframework.beans.factory.annotation.Autowired;
