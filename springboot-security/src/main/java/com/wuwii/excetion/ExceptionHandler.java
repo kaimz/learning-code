@@ -5,6 +5,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.context.support.DefaultMessageSourceResolvable;
 import org.springframework.dao.DuplicateKeyException;
 import org.springframework.http.ResponseEntity;
+import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.validation.BindException;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
@@ -68,6 +69,12 @@ public class ExceptionHandler {
     public ResponseEntity<String> handleException(AccessDeniedException e) {
         LOGGER.debug(e.getMessage(), e);
         return ResponseEntity.status(UNAUTHORIZED).body("不允许访问");
+    }
+
+    @org.springframework.web.bind.annotation.ExceptionHandler(HttpMessageNotReadableException.class)
+    public ResponseEntity<String> handleException(HttpMessageNotReadableException e) {
+        LOGGER.debug(e.getMessage(), e);
+        return ResponseEntity.status(NOT_FOUND).body("not found");
     }
 
 

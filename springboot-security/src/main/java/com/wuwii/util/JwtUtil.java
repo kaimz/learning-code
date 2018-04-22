@@ -1,6 +1,5 @@
 package com.wuwii.util;
 
-import com.wuwii.excetion.KCException;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
@@ -8,7 +7,7 @@ import lombok.Data;
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang.time.DateUtils;
 import org.springframework.boot.context.properties.ConfigurationProperties;
-import org.springframework.http.HttpStatus;
+import org.springframework.security.authentication.BadCredentialsException;
 
 import java.util.Date;
 
@@ -82,11 +81,11 @@ public class JwtUtil {
 
     public String getUsernameFromToken(String token) {
         if (StringUtils.isBlank(token)) {
-            throw new KCException("无效 token", HttpStatus.UNAUTHORIZED.value());
+            throw new BadCredentialsException("无效 token");
         }
         Claims claims = getClaimByToken(token);
         if (claims == null || isTokenExpired(claims.getExpiration())) {
-            throw new KCException(header + "失效，请重新登录", HttpStatus.UNAUTHORIZED.value());
+            throw new BadCredentialsException(header + "失效，请重新登录");
         }
         return claims.getSubject();
     }

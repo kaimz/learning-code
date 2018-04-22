@@ -1,7 +1,8 @@
 package com.wuwii.config.security.v2;
 
-import com.wuwii.config.security.CustomAuthenticationProvider;
 import com.wuwii.config.security.UserDetailServiceImpl;
+import com.wuwii.config.security.v2.authenticate.LoginAuthenticationProvider;
+import com.wuwii.config.security.v2.authenticate.TokenAuthenticateProvider;
 import com.wuwii.util.JwtUtil;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -20,9 +21,10 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 /**
  * http://nealma.com/2016/04/30/spring-boot-4-security/
  * https://juejin.im/entry/5990130cf265da3e213f0f81
- *
+ * <p>
  * http://www.spring4all.com/article/420
  * https://juejin.im/post/59d5bbebf265da066c233d0e
+ *
  * @author kronchan
  * @version 2.0
  */
@@ -47,14 +49,27 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     /**
      * 认证
      */
+    @Bean("loginAuthenticationProvider")
+    public AuthenticationProvider loginAuthenticationProvider() {
+        return new LoginAuthenticationProvider();
+    }
+
+    @Bean("tokenAuthenticationProvider")
+    public AuthenticationProvider tokenAuthenticationProvider() {
+        return new TokenAuthenticateProvider();
+    }
+
     @Bean
-    public AuthenticationProvider authenticationProvider() {
-        return new CustomAuthenticationProvider();
+    public AuthenticationFilter authenticationFilter() throws Exception {
+        AuthenticationFilter authenticationFilter = new AuthenticationFilter();
+        authenticationFilter.setAuthenticationManager(authenticationManager());
+        return authenticationFilter;
     }
 
     /**
      * BCrypt算法免除存储salt
      * BCrypt算法将salt随机并混入最终加密后的密码，验证时也无需单独提供之前的salt，从而无需单独处理salt问题。
+     *
      * @return
      */
     @Bean
@@ -62,6 +77,11 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         return new BCryptPasswordEncoder(5);
     }
 
+    @Bean
+    @Override
+    public UserDetailsService userDetailsService() {
+        return new UserDetailServiceImpl();
+    }
     /**
      * 主要是对身份验证的设置
      */
@@ -69,19 +89,13 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     protected void configure(AuthenticationManagerBuilder auth) throws Exception {
 
         auth
-                // 注入身份的 Bean
-                .authenticationProvider(authenticationProvider())
+                .authenticationProvider(loginAuthenticationProvider())
+                .authenticationProvider(tokenAuthenticationProvider())
                 .userDetailsService(userDetailsService());
-                // 默认登陆的加密，自定义登陆的时候无效
-                //.passwordEncoder(passwordEncoder());
-        // 在内存中设置固定的账户密码以及身份信息
-        /*auth
-                .inMemoryAuthentication().withUser("user").password("password").roles("USER").and()
-                .withUser("admin").password("password").roles("USER", "ADMIN");*/
+
     }
 
     /**
-     *
      * @param http
      * @throws Exception
      */
@@ -102,31 +116,16 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 //.loginPage("/login.html")
                 // 登陆成功跳转页面
                 .defaultSuccessUrl("/")
-                //.failureForwardUrl("/login.html")
+                .failureForwardUrl("/login.html")
                 .permitAll()
                 .and()
-                // 登出
-                //.logout()
-                // 注销的时候删除会话
-                //.deleteCookies("JSESSIONID")
-                // 默认登出请求为 /logout，可以用下面自定义
-                //.logoutRequestMatcher(new AntPathRequestMatcher("/logout"))
-                // 自定义登出成功的页面，默认为登陆页
-                //.logoutSuccessUrl("/logout.html")
-                //.permitAll()
-                //.and()
-                // 开启 cookie 保存用户信息
-                //.rememberMe()
-                // cookie 有效时间
-                //.tokenValiditySeconds(60 * 60 * 24 * 7)
-                // 设置cookie 的私钥，默认为随机生成的key
-                //.key("remember")
-                //.and()
+                .addFilter(authenticationFilter())
         ;
     }
 
     /**
      * Web层面的配置，一般用来配置无需安全检查的路径
+     *
      * @param web
      * @throws Exception
      */

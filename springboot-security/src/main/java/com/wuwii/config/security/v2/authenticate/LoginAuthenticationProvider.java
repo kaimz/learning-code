@@ -1,6 +1,5 @@
-package com.wuwii.config.security;
+package com.wuwii.config.security.v2.authenticate;
 
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.authentication.BadCredentialsException;
@@ -15,19 +14,17 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import java.util.Collection;
 
 /**
- *
+ * @author KronChan
+ * @version 1.0
+ * @since <pre>2018/4/22 11:13</pre>
  */
-@Slf4j
-public class CustomAuthenticationProvider implements AuthenticationProvider {
+public class LoginAuthenticationProvider implements AuthenticationProvider {
     @Autowired
     private UserDetailsService userDetailsService;
 
     @Autowired
     private PasswordEncoder passwordEncoder;
 
-    /**
-     * 验证登录信息,若登陆成功,设置 Authentication
-     */
     @Override
     public Authentication authenticate(Authentication authentication) throws AuthenticationException {
         String username = authentication.getName();
@@ -40,11 +37,8 @@ public class CustomAuthenticationProvider implements AuthenticationProvider {
         throw new BadCredentialsException("The password is not correct.");
     }
 
-    /**
-     * 是否支持对该类型的凭证提供认证服务
-     */
     @Override
     public boolean supports(Class<?> authentication) {
-        return true;
+        return UsernamePasswordAuthenticationToken.class.equals(authentication);
     }
 }

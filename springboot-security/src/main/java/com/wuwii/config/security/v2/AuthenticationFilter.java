@@ -5,15 +5,16 @@ import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
-import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.InternalAuthenticationServiceException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.security.web.authentication.preauth.PreAuthenticatedAuthenticationToken;
 
 import javax.servlet.FilterChain;
+import javax.servlet.ServletException;
 import javax.servlet.ServletRequest;
 import javax.servlet.ServletResponse;
 import javax.servlet.http.HttpServletRequest;
@@ -30,23 +31,25 @@ public class AuthenticationFilter extends UsernamePasswordAuthenticationFilter {
     @Autowired
     private JwtUtil jwtUtil;
 
-    private AuthenticationManager authenticationManager;
-
-    public AuthenticationFilter(AuthenticationManager authenticationManager) {
-        this.authenticationManager = authenticationManager;
-    }
     @Override
-    public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain){
+    public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain) throws IOException, ServletException {
         HttpServletRequest httpRequest = (HttpServletRequest) request;
         HttpServletResponse httpResponse = (HttpServletResponse) response;
-
-        if (isLoginRequest(httpRequest, httpResponse)) {
-            processLogin(httpRequest, httpResponse);
+        try {
+            if (isLoginRequest(httpRequest, httpResponse)) {
+                Authentication authResult = processLogin(httpRequest, httpResponse);
+                successfulAuthentication(httpRequest, httpResponse, chain, authResult);
+                return;
+            }
+            String token = obtainToken(httpRequest);
+            if (StringUtils.isNotBlank(token)) {
+                processTokenAuthentication(token);
+            }
+        } catch (AuthenticationException e) {
+            unsuccessfulAuthentication(httpRequest, httpResponse, e);
+            return;
         }
-        String token = obtainToken(httpRequest);
-        if (StringUtils.isNotBlank(token)) {
-
-        }
+        chain.doFilter(request, response);
     }
     /**
      * 登陆成功调用，返回 token
@@ -68,10 +71,10 @@ public class AuthenticationFilter extends UsernamePasswordAuthenticationFilter {
         return request.getHeader(jwtUtil.getHeader());
     }
 
-    private void processLogin(HttpServletRequest request, HttpServletResponse response) {
+    private Authentication processLogin(HttpServletRequest request, HttpServletResponse response) {
         String username = obtainUsername(request);
         String password = obtainPassword(request);
-        Authentication authentication = tryAuthenticationWithUsernameAndPassword(username, password);
+        return tryAuthenticationWithUsernameAndPassword(username, password);
     }
 
     private void processTokenAuthentication(String token) {
@@ -91,7 +94,7 @@ public class AuthenticationFilter extends UsernamePasswordAuthenticationFilter {
     }
 
     private Authentication tryToAuthenticate(Authentication requestAuth) {
-        Authentication responseAuth = authenticationManager.authenticate(requestAuth);
+        Authentication responseAuth = getAuthenticationManager().authenticate(requestAuth);
         if (responseAuth == null || !responseAuth.isAuthenticated()) {
             throw new InternalAuthenticationServiceException("Unable to authenticate Domain User for provided credentials");
         }
