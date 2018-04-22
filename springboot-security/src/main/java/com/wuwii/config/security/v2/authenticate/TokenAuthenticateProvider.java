@@ -32,6 +32,4 @@ public class TokenAuthenticateProvider implements AuthenticationProvider {
     public boolean supports(Class<?> authentication) {
         return PreAuthenticatedAuthenticationToken.class.equals(authentication);
     }
-
-
 }

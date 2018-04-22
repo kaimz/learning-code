@@ -10,7 +10,6 @@ import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
-import org.springframework.security.config.annotation.web.builders.WebSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.config.http.SessionCreationPolicy;
@@ -31,24 +30,17 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 @Configuration
 @EnableWebSecurity // 开启 Security
 @EnableGlobalMethodSecurity(prePostEnabled = true, securedEnabled = true, jsr250Enabled = true)
-//jsr250Enabled有三种注解，分别是@RolesAllowed,@PermitAll,@DenyAll,功能跟名字一样，
-// securedEnabled 开启注解
-// prePostEnabled  类似用的最多的是 @PreAuthorize
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     @Bean
     public JwtUtil jwtUtil() {
         return new JwtUtil();
     }
 
-
     @Bean
     public UserDetailsService customService() {
         return new UserDetailServiceImpl();
     }
 
-    /**
-     * 认证
-     */
     @Bean("loginAuthenticationProvider")
     public AuthenticationProvider loginAuthenticationProvider() {
         return new LoginAuthenticationProvider();
@@ -66,12 +58,6 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         return authenticationFilter;
     }
 
-    /**
-     * BCrypt算法免除存储salt
-     * BCrypt算法将salt随机并混入最终加密后的密码，验证时也无需单独提供之前的salt，从而无需单独处理salt问题。
-     *
-     * @return
-     */
     @Bean
     public PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder(5);
@@ -87,7 +73,6 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
      */
     @Override
     protected void configure(AuthenticationManagerBuilder auth) throws Exception {
-
         auth
                 .authenticationProvider(loginAuthenticationProvider())
                 .authenticationProvider(tokenAuthenticationProvider())
@@ -95,10 +80,6 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
     }
 
-    /**
-     * @param http
-     * @throws Exception
-     */
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http
@@ -121,24 +102,5 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .and()
                 .addFilter(authenticationFilter())
         ;
-    }
-
-    /**
-     * Web层面的配置，一般用来配置无需安全检查的路径
-     *
-     * @param web
-     * @throws Exception
-     */
-    @Override
-    public void configure(WebSecurity web) throws Exception {
-        web
-                .ignoring()
-                .antMatchers(
-                        "**.js",
-                        "**.css",
-                        "/images/**",
-                        "/webjars/**",
-                        "/**/favicon.ico"
-                );
     }
 }
