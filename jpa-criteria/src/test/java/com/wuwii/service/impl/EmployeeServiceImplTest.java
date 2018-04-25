@@ -5,10 +5,7 @@ import com.wuwii.entity.EmployeeDetail;
 import com.wuwii.form.EmployeeSearch;
 import com.wuwii.service.EmployeeService;
 import org.hamcrest.Matchers;
-import org.junit.After;
-import org.junit.Assert;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.*;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -26,7 +23,9 @@ import java.util.List;
  * @version 1.0
  * @since <pre>03/08/2018</pre>
  */
+// 获取启动类，加载配置
 @SpringBootTest
+// 获得 Spring 环境的上下文的支持
 @RunWith(SpringRunner.class)
 public class EmployeeServiceImplTest {
     @Autowired
@@ -34,10 +33,22 @@ public class EmployeeServiceImplTest {
 
     @Before
     public void before() throws Exception {
+        System.out.println("before");
     }
 
     @After
     public void after() throws Exception {
+        System.out.println("after");
+    }
+
+    @BeforeClass
+    public static void beforeClass() {
+        System.out.println("Before Class");
+    }
+
+    @AfterClass
+    public static void afterClass() {
+        System.out.println("After Class");
     }
 
     /**
