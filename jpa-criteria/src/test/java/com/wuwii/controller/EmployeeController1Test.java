@@ -35,5 +35,4 @@ public class EmployeeController1Test {
         ResponseEntity<List<EmployeeResult>> result = restTemplate.exchange("/emp", HttpMethod.GET, null, type);
         Assert.assertThat(result.getBody().get(0).getName(), Matchers.notNullValue());
     }
-
 }
