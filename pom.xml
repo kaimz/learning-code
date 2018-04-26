@@ -4,11 +4,10 @@
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>com.wuwii</groupId>
-    <artifactId>springboot-docker</artifactId>
+    <artifactId>learning-code</artifactId>
     <version>0.0.1-SNAPSHOT</version>
-    <packaging>jar</packaging>
 
-    <name>springboot-docker</name>
+    <name>larning-code</name>
     <description>Demo project for Spring Boot</description>
     <modules>
         <module>design-pattern</module>
