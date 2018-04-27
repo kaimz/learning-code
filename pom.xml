@@ -5,9 +5,15 @@
 
     <groupId>com.wuwii</groupId>
     <artifactId>learning-code</artifactId>
+    <packaging>pom</packaging>
     <version>0.0.1-SNAPSHOT</version>
-
-    <name>larning-code</name>
+    <parent>
+        <groupId>org.springframework.boot</groupId>
+        <artifactId>spring-boot-starter-parent</artifactId>
+        <version>2.0.1.RELEASE</version>
+        <relativePath/> <!-- lookup parent from repository -->
+    </parent>
+    <name>learning-code</name>
     <description>Demo project for Spring Boot</description>
     <modules>
         <module>design-pattern</module>
@@ -24,6 +30,7 @@
         <module>springboot-redis-cache</module>
         <module>springboot-security</module>
         <module>template-design-spring</module>
+        <module>spring-boot-test</module>
     </modules>
 
 </project>
