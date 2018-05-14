@@ -18,7 +18,7 @@ public class StrategyDemo {
 
     public static void main(String[] args) {
         System.out.println(StrategyDemo.vehicle("taxi"));
-        System.out.println(StrategyContext.strategyVehicle(Bike.class));
+        System.out.println(StrategyContext.strategyVehicle(Bike.class).take());
     }
 
 }

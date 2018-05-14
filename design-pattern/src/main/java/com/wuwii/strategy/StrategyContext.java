@@ -7,13 +7,12 @@ import com.sun.istack.internal.Nullable;
  */
 public class StrategyContext {
     @Nullable
-    public static String strategyVehicle(Class<? extends Vehicle> clazz) {
+    public static Vehicle strategyVehicle(Class<? extends Vehicle> clazz) {
         if (clazz == null) {
             return null;
         }
         try {
-            Vehicle vehicle = (Vehicle) Class.forName(clazz.getName()).newInstance();
-            return vehicle.take();
+            return (Vehicle) Class.forName(clazz.getName()).newInstance();
         } catch (InstantiationException | IllegalAccessException | ClassNotFoundException e) {
             e.printStackTrace();
         }
