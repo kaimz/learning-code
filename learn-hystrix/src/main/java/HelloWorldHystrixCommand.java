@@ -1,5 +1,6 @@
 import com.netflix.hystrix.HystrixCommand;
 import com.netflix.hystrix.HystrixCommandGroupKey;
+import org.apache.log4j.BasicConfigurator;
 
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.Future;
@@ -37,6 +38,7 @@ public class HelloWorldHystrixCommand extends HystrixCommand<String> {
     }
 
     public static void main(String[] args) {
+        BasicConfigurator.configure();
         // 每个 command 实例只能使用一次
 
         // 以同步堵塞方式执行run()

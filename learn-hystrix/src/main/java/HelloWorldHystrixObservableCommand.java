@@ -1,6 +1,7 @@
 import com.netflix.hystrix.HystrixCommandGroupKey;
 import com.netflix.hystrix.HystrixObservableCommand;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.log4j.BasicConfigurator;
 import rx.Observable;
 import rx.Observer;
 import rx.Subscriber;
@@ -38,6 +39,7 @@ public class HelloWorldHystrixObservableCommand extends HystrixObservableCommand
     }
 
     public static void main(String[] args) {
+        BasicConfigurator.configure();
         HelloWorldHystrixObservableCommand command = new HelloWorldHystrixObservableCommand("kronchan");
         Observable<String> observable = command.observe();
         observable.subscribe(new Observer<String>() {
