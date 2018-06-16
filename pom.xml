@@ -32,6 +32,7 @@
         <module>template-design-spring</module>
         <module>spring-boot-test</module>
         <module>interview-code</module>
+        <module>nio-netty</module>
     </modules>
 
 </project>
