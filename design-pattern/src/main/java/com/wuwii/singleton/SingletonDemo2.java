@@ -8,7 +8,7 @@ package com.wuwii.singleton;
  * @since <pre>2018/3/21 16:34</pre>
  */
 public class SingletonDemo2 {
-    private static SingletonDemo2 instance;
+    private static SingletonDemo2 instance = new SingletonDemo2();
 
     private SingletonDemo2() {
 
