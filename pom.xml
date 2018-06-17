@@ -33,6 +33,7 @@
         <module>spring-boot-test</module>
         <module>interview-code</module>
         <module>nio-netty</module>
+        <module>algorithm</module>
     </modules>
 
 </project>
