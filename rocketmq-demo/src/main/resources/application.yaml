@@ -1,0 +1,21 @@
+spring:
+  application:
+    name: @pom.artifactId@
+
+group-name: demo
+namesrvAddr: k.wuwii.com:9876
+rocketmq:
+  product:
+    group-name: ${group-name}
+    namesrvAddr: ${namesrvAddr}
+    maxMessageSize: 4096
+    sendMsgTimeout: 10000
+    retryTimesWhenSendFailed: 3
+  comsume:
+    group-name: ${group-name}
+    namesrvAddr: ${namesrvAddr}
+    topics: 'test~*'
+    consumeThreadMin: 10
+    consumeThreadMax: 60
+    consumeMessageBatchMaxSize: 2
+
