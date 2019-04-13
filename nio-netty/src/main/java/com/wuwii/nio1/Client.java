@@ -12,7 +12,7 @@ import java.util.concurrent.TimeUnit;
  */
 public class Client {
     public static void main(String[] args) throws IOException, InterruptedException {
-        for (int i = 0; i < 1; i++) {
+        for (int i = 0; i < 10; i++) {
             new Thread(new Runnable() {
                 @Override
                 public void run() {
@@ -37,9 +37,7 @@ public class Client {
                     }
                 }
             }).start();
-
-            TimeUnit.HOURS.sleep(1);
-
+            //TimeUnit.HOURS.sleep(1);
         }
     }
 }
