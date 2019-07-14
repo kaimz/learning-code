@@ -15,6 +15,16 @@
     </parent>
     <name>learning-code</name>
     <description>Demo project for Spring Boot</description>
+    <dependencyManagement>
+        <dependencies>
+            <dependency>
+                <artifactId>vertx-jdbc-client</artifactId>
+                <groupId>io.vertx</groupId>
+                <version>${vertx.version}</version>
+            </dependency>
+        </dependencies>
+    </dependencyManagement>
+
     <modules>
         <module>design-pattern</module>
         <module>fork-join</module>
@@ -34,6 +44,12 @@
         <module>interview-code</module>
         <module>nio-netty</module>
         <module>algorithm</module>
+        <module>vertx</module>
+        <module>spring-event</module>
     </modules>
+
+    <properties>
+        <vertx.version>3.5.3</vertx.version>
+    </properties>
 
 </project>

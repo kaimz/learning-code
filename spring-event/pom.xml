@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xmlns="http://maven.apache.org/POM/4.0.0"
+  xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <artifactId>spring-event</artifactId>
+  <dependencies>
+    <dependency>
+      <artifactId>spring-boot-starter</artifactId>
+      <groupId>org.springframework.boot</groupId>
+    </dependency>
+    <dependency>
+      <artifactId>spring-boot-test</artifactId>
+      <groupId>org.springframework.boot</groupId>
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <artifactId>junit</artifactId>
+      <groupId>junit</groupId>
+    </dependency>
+    <dependency>
+      <artifactId>spring-test</artifactId>
+      <groupId>org.springframework</groupId>
+      <scope>test</scope>
+      <version>5.1.8.RELEASE</version>
+    </dependency>
+  </dependencies>
+
+  <modelVersion>4.0.0</modelVersion>
+
+  <parent>
+    <artifactId>learning-code</artifactId>
+    <groupId>com.wuwii</groupId>
+    <version>0.0.1-SNAPSHOT</version>
+  </parent>
+</project>
