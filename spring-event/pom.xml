@@ -9,19 +9,9 @@
       <groupId>org.springframework.boot</groupId>
     </dependency>
     <dependency>
-      <artifactId>spring-boot-test</artifactId>
       <groupId>org.springframework.boot</groupId>
+      <artifactId>spring-boot-starter-test</artifactId>
       <scope>test</scope>
-    </dependency>
-    <dependency>
-      <artifactId>junit</artifactId>
-      <groupId>junit</groupId>
-    </dependency>
-    <dependency>
-      <artifactId>spring-test</artifactId>
-      <groupId>org.springframework</groupId>
-      <scope>test</scope>
-      <version>5.1.8.RELEASE</version>
     </dependency>
   </dependencies>
 
