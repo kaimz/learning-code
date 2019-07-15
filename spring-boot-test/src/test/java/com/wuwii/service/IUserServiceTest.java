@@ -34,7 +34,14 @@ public class IUserServiceTest {
         // 打桩，构建当 userRepository的 getOne 函数执行参数为 3的时候，设置结果抛出异常
         Mockito.when(userRepository.getOne(3L)).thenThrow(new IllegalArgumentException("The id is not support"));
         // 打桩，当 userRepository.updateUser 执行任何User类型的参数，返回的结果都是true
-        Mockito.when(userRepository.updateUser(Mockito.any(User.class))).thenReturn(true);
+        Mockito.when(userRepository.save(mockUser())).thenReturn(mockUser());
+    }
+
+    private User mockUser() {
+        User user = new User();
+        user.setUsername("kronchan");
+        user.setPassword("123456");
+        return user;
     }
 
     @Test
@@ -64,7 +71,7 @@ public class IUserServiceTest {
         // 构造参数捕获器，用于捕获方法参数进行验证
         ArgumentCaptor<User> userCaptor = ArgumentCaptor.forClass(User.class);
         // 验证updateUser方法是否被调用过，并且捕获入参
-        Mockito.verify(userRepository).updateUser(userCaptor.capture());
+        Mockito.verify(userRepository).save(userCaptor.capture());
         // 获取参数 updatedUser
         User updatedUser = userCaptor.getValue();
         // 验证入参是否是预期的

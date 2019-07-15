@@ -22,11 +22,17 @@ public class UserServiceImpl implements IUserService {
 
     @Override
     public boolean updateUsername(Long id, String username) {
+        assert username != null;
         User user = findOne(id);
         if (user == null) {
             return false;
         }
         user.setUsername(username);
-        return userRepository.updateUser(user);
+        return username.equals(userRepository.save(user).getUsername());
+    }
+
+    @Override
+    public User save(User user) {
+        return userRepository.save(user);
     }
 }
