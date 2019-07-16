@@ -12,4 +12,6 @@ public interface IUserService {
     boolean updateUsername(Long id, String usernmae);
 
     User save(User user);
+
+  User findByUsername(String username);
 }
