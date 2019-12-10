@@ -22,6 +22,11 @@
                 <groupId>io.vertx</groupId>
                 <version>${vertx.version}</version>
             </dependency>
+            <dependency>
+                <groupId>com.h2database</groupId>
+                <artifactId>h2</artifactId>
+                <version>${h2.version}</version>
+            </dependency>
         </dependencies>
     </dependencyManagement>
 
@@ -50,6 +55,7 @@
 
     <properties>
         <vertx.version>3.5.3</vertx.version>
+        <h2.version>1.4.199</h2.version>
     </properties>
 
 </project>
