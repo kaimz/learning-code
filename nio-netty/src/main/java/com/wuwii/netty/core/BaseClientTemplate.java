@@ -1,6 +1,7 @@
 package com.wuwii.netty.core;
 
 import io.netty.bootstrap.Bootstrap;
+import io.netty.channel.Channel;
 import io.netty.channel.ChannelFuture;
 import io.netty.channel.ChannelHandler;
 import io.netty.channel.ChannelInitializer;
@@ -44,12 +45,18 @@ public abstract class BaseClientTemplate {
                     });
             // 启动客户端
             ChannelFuture future = bootstrap.connect(host, port).sync();
+            Channel channel = future.channel();
+            op(channel);
             // 关闭连接
-            future.channel().closeFuture().sync();
+            channel.closeFuture().sync();
         } catch (InterruptedException e) {
             e.printStackTrace();
         } finally {
             workGroup.shutdownGracefully();
         }
+    }
+
+    protected void op(Channel channel) {
+        // NOOP
     }
 }

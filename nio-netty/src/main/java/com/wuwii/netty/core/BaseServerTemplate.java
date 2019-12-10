@@ -33,13 +33,7 @@ public abstract class BaseServerTemplate {
             bootstrap.group(bossGroup, workerGroup)
                     .channel(NioServerSocketChannel.class)
                     // 处理一个已经接收的 channel, 自定义事件处理
-                    .childHandler(new ChannelInitializer<SocketChannel>() {
-                        @Override
-                        protected void initChannel(SocketChannel socketChannel) {
-                            // 添加处理类到 pipeline 上,也就是把我们的丢弃处理加入
-                            socketChannel.pipeline().addLast(channelHandlers);
-                        }
-                    })
+                    .childHandler(handler())
                     // 提供 NioServerSocketChannel 用来接收连接的属性设置
                     .option(ChannelOption.SO_BACKLOG, 128)
                     // 提供父管道 ServerChannel 接收到连接的属性设置
@@ -56,5 +50,15 @@ public abstract class BaseServerTemplate {
             bossGroup.shutdownGracefully();
         }
 
+    }
+
+    protected ChannelHandler handler(ChannelHandler... channelHandlers) {
+        return new ChannelInitializer<SocketChannel>() {
+            @Override
+            protected void initChannel(SocketChannel socketChannel) {
+                // 添加处理类到 pipeline 上
+                socketChannel.pipeline().addLast(channelHandlers);
+            }
+        };
     }
 }
