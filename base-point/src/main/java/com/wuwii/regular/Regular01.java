@@ -19,7 +19,7 @@ public class Regular01 {
         // 创建指定字符串的匹配对象
         Matcher matcher = HTTP_PATTERN.matcher(http);
         // 根据创建好的匹配对象,我们可以根据正则表达式的规则操作字符串
-        // matches 表示,正则能匹配整个字符串,则返回 true,否则返回 false
+        // matches 表示,尝试将整个区域与模式匹配,则返回 true,否则返回 false
         boolean matches = matcher.matches();
         if (matches) {
             System.out.printf("http:%s, matches result=true", http);
